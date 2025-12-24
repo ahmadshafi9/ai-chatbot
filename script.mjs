@@ -113,14 +113,7 @@ main().catch(console.error);
 
 OpenRouter key loaded: true
 enter prompt: s
-
---- FINAL ANSWER ---
-
-It looks like your message got cut off. Could you let me know what you’re looking for? I’m here to help!
-ahmad.mogral@ip-10-72-104-141 cli % node script.mjs
-OpenRouter key loaded: true
-enter prompt: how much would it cost for 3 days in kerala
-ChatError: Provider returned error
+ChatError: User not found.
     at Object.transform (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/models/errors/chaterror.js:26:12)
     at inst._zod.parse (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/classic/schemas.js:856:28)
     at handlePipeResult (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/core/schemas.js:1749:22)
@@ -131,14 +124,14 @@ ChatError: Provider returned error
     at safeParseResponse (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:193:19)
     at matchFunc (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:168:28)
     at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
-  statusCode: 429,
-  body: '{"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"Chutes"}},"user_id":"user_37C8CQywNKwcXbOKEIdZ5xnoENt"}',
+  statusCode: 401,
+  body: '{"error":{"message":"User not found.","code":401}}',
   headers: Headers {
-    date: 'Wed, 24 Dec 2025 07:08:08 GMT',
+    date: 'Wed, 24 Dec 2025 07:16:24 GMT',
     'content-type': 'application/json',
     'transfer-encoding': 'chunked',
     connection: 'keep-alive',
-    'cf-ray': '9b2e44009c6df8a8-DXB',
+    'cf-ray': '9b2e50241b68941f-DXB',
     'access-control-allow-origin': '*',
     vary: 'Accept-Encoding',
     'permissions-policy': 'payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")',
@@ -148,14 +141,14 @@ ChatError: Provider returned error
   },
   contentType: 'application/json',
   rawResponse: Response {
-    status: 429,
-    statusText: 'Too Many Requests',
+    status: 401,
+    statusText: 'Unauthorized',
     headers: Headers {
-      date: 'Wed, 24 Dec 2025 07:08:08 GMT',
+      date: 'Wed, 24 Dec 2025 07:16:24 GMT',
       'content-type': 'application/json',
       'transfer-encoding': 'chunked',
       connection: 'keep-alive',
-      'cf-ray': '9b2e44009c6df8a8-DXB',
+      'cf-ray': '9b2e50241b68941f-DXB',
       'access-control-allow-origin': '*',
       vary: 'Accept-Encoding',
       'permissions-policy': 'payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")',
@@ -171,7 +164,7 @@ ChatError: Provider returned error
     url: 'https://openrouter.ai/api/v1/chat/completions'
   },
   'data$': {
-    error: { code: 429, message: 'Provider returned error' },
+    error: { code: 401, message: 'User not found.' },
     'request$': Request {
       method: 'POST',
       url: 'https://openrouter.ai/api/v1/chat/completions',
@@ -196,14 +189,14 @@ ChatError: Provider returned error
       signal: AbortSignal { aborted: false }
     },
     'response$': Response {
-      status: 429,
-      statusText: 'Too Many Requests',
+      status: 401,
+      statusText: 'Unauthorized',
       headers: Headers {
-        date: 'Wed, 24 Dec 2025 07:08:08 GMT',
+        date: 'Wed, 24 Dec 2025 07:16:24 GMT',
         'content-type': 'application/json',
         'transfer-encoding': 'chunked',
         connection: 'keep-alive',
-        'cf-ray': '9b2e44009c6df8a8-DXB',
+        'cf-ray': '9b2e50241b68941f-DXB',
         'access-control-allow-origin': '*',
         vary: 'Accept-Encoding',
         'permissions-policy': 'payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")',
@@ -218,7 +211,7 @@ ChatError: Provider returned error
       type: 'basic',
       url: 'https://openrouter.ai/api/v1/chat/completions'
     },
-    'body$': '{"error":{"message":"Provider returned error","code":429,"metadata":{"raw":"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"Chutes"}},"user_id":"user_37C8CQywNKwcXbOKEIdZ5xnoENt"}'
+    'body$': '{"error":{"message":"User not found.","code":401}}'
   },
-  error: { code: 429, message: 'Provider returned error' }
+  error: { code: 401, message: 'User not found.' }
 }
