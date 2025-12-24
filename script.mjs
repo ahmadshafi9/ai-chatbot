@@ -8,7 +8,7 @@ const MAX_ITERATIONS = 3;
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 // -------------------- USER INPUT --------------------
-const userQ = prompt("enter prompt: ");
+const userQ = process.argv[2] || prompt("enter prompt: ");
 
 // -------------------- TOOL DEFINITIONS (JSON) --------------------
 const tools = [
@@ -45,7 +45,7 @@ async function search_web({ search_terms }) {
     {
       headers: {
         Accept: "application/json",
-        "x-subscription-token": process.env.BRAVE_API_KEY
+        "X-Subscription-Token": process.env.BRAVE_API_KEY
       }
     }
   );
@@ -65,7 +65,7 @@ async function callLLM(messages) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: "deepseek/deepseek-r1-0528:free",
+      model: "openai/gpt-4o-mini",
       messages,
       tools
     })
@@ -87,7 +87,11 @@ async function main() {
 
   for (let i = 0; i < MAX_ITERATIONS; i++) {
     const msg = await callLLM(messages);
-    messages.push(msg);
+    messages.push({
+      role: "assistant",
+      content: msg.content,
+      tool_calls: msg.tool_calls
+    });
 
     if (!msg.tool_calls) break;
 
@@ -110,4 +114,5 @@ async function main() {
 }
 
 main().catch(console.error);
+
 
