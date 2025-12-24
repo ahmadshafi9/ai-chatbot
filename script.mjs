@@ -1,33 +1,45 @@
 import 'dotenv/config';
 import { OpenRouter } from "@openrouter/sdk";
 import PromptSync from "prompt-sync";
-import fetch from 'node-fetch';
+import fetch from "node-fetch";
 
+// -------------------- SETUP --------------------
 const prompt = PromptSync();
-const count = 3;
+const MAX_ITERATIONS = 3;
 
-// user prompt
+// sanity check (IMPORTANT)
+console.log(
+  "OpenRouter key loaded:",
+  process.env.OPENROUTER_API_KEY?.startsWith("sk-or-")
+);
+
+// -------------------- USER INPUT --------------------
 const userQ = prompt("enter prompt: ");
 
-// llm api
+// -------------------- OPENROUTER CLIENT --------------------
 const openrouter = new OpenRouter({
-  apiKey: process.env.API_KEY
+  apiKey: process.env.OPENROUTER_API_KEY,
+  defaultHeaders: {
+    Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    "HTTP-Referer": "http://localhost:3000",
+    "X-Title": "CLI Web Search Agent"
+  }
 });
 
-// tool definition
+// -------------------- TOOL DEFINITIONS --------------------
 const tools = [
   {
     type: "function",
     function: {
       name: "search_web",
-      description: "Search for things on the web",
+      description: "Search the web for relevant information",
       parameters: {
         type: "object",
         properties: {
           search_terms: {
             type: "array",
             items: { type: "string" },
-            description: "List of search terms"
+            description: "Search queries"
           }
         },
         required: ["search_terms"]
@@ -36,7 +48,7 @@ const tools = [
   }
 ];
 
-// ---- TOOL IMPLEMENTATION ----
+// -------------------- TOOL IMPLEMENTATION --------------------
 async function search_web({ search_terms }) {
   const query = search_terms.join(" ");
 
@@ -55,37 +67,38 @@ async function search_web({ search_terms }) {
     }
   );
 
-  const body = await response.json();
-  return JSON.stringify(body);
+  const json = await response.json();
+  return JSON.stringify(json);
 }
 
-// ---- TOOL MAPPING ----
+// tool lookup table
 const TOOL_MAPPING = {
   search_web
 };
 
-// ---- LLM CALL ----
+// -------------------- LLM CALL --------------------
 async function callLLM(messages) {
-  const result = await openrouter.chat.send({
+  const response = await openrouter.chat.send({
     model: "deepseek/deepseek-r1-0528:free",
     messages,
     tools,
     stream: false
   });
 
-  return result.choices[0].message;
+  return response.choices[0].message;
 }
 
-// ---- MAIN AGENT LOOP ----
+// -------------------- MAIN AGENT LOOP --------------------
 async function main() {
   const messages = [
     { role: "user", content: userQ }
   ];
 
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < MAX_ITERATIONS; i++) {
     const msg = await callLLM(messages);
     messages.push(msg);
 
+    // no tool call → final answer
     if (!msg.toolCalls) break;
 
     for (const toolCall of msg.toolCalls) {
@@ -102,41 +115,8 @@ async function main() {
     }
   }
 
-  console.log(
-    messages[messages.length - 1].content
-  );
+  console.log("\n--- FINAL ANSWER ---\n");
+  console.log(messages[messages.length - 1].content);
 }
 
-main();
-
-file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/models/errors/chaterror.js:26
-    return new ChatError(v, {
-           ^
-
-/* ChatError: User not found.
-    at Object.transform (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/models/errors/chaterror.js:26:12)
-    at inst._zod.parse (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/classic/schemas.js:856:28)
-    at handlePipeResult (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/core/schemas.js:1749:22)
-    at inst._zod.parse (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/core/schemas.js:1740:16)
-    at Module.<anonymous> (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/core/parse.js:6:32)
-    at inst.parse (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/classic/schemas.js:36:42)
-    at safeParseResponse.request.request (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:168:74)
-    at safeParseResponse (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:193:19)
-    at matchFunc (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:168:28)
-    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
-  statusCode: 401,
-  body: '{"error":{"message":"User not found.","code":401}}',
-  headers: Headers {},
-  contentType: 'application/json',
-  rawResponse: Response {},
-  'data$': {
-    error: { code: 401, message: 'User not found.' },
-    'request$': Request {},
-    'response$': Response {},
-    'body$': '{"error":{"message":"User not found.","code":401}}'
-  },
-  error: { code: 401, message: 'User not found.' }
-}
-
-Node.js v25.2.1
-*/
+main().catch(console.error);
