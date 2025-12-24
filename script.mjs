@@ -2,15 +2,15 @@ import 'dotenv/config';
 import PromptSync from "prompt-sync";
 import fetch from "node-fetch";
 
-// -------------------- CONFIG --------------------
+
 const prompt = PromptSync();
 const MAX_ITERATIONS = 3;
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-// -------------------- USER INPUT --------------------
+// take user input
 const userQ = process.argv[2] || prompt("enter prompt: ");
 
-// -------------------- TOOL DEFINITIONS (JSON) --------------------
+// tool def
 const tools = [
   {
     type: "function",
@@ -31,7 +31,7 @@ const tools = [
   }
 ];
 
-// -------------------- TOOL IMPLEMENTATION --------------------
+// search the web if needed
 async function search_web({ search_terms }) {
   const query = search_terms.join(" ");
 
@@ -54,7 +54,7 @@ async function search_web({ search_terms }) {
   return JSON.stringify(json);
 }
 
-// -------------------- OPENROUTER RAW CALL --------------------
+// call the llm (openrouter/...)
 async function callLLM(messages) {
   const res = await fetch(OPENROUTER_URL, {
     method: "POST",
@@ -81,7 +81,7 @@ async function callLLM(messages) {
   return json.choices[0].message;
 }
 
-// -------------------- AGENT LOOP --------------------
+// the right order of running everything
 async function main() {
   const messages = [{ role: "user", content: userQ }];
 
