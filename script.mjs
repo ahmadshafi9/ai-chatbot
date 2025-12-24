@@ -110,3 +110,53 @@ async function main() {
 }
 
 main().catch(console.error);
+
+OpenRouter key loaded: true
+enter prompt: hey
+OpenRouterDefaultError: API error occurred: Status 404
+Body: {"error":{"message":"No endpoints found that support tool use. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection","code":404}}
+    at matchFunc (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:131:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async $do (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/funcs/chatSend.js:72:22) {
+  statusCode: 404,
+  body: '{"error":{"message":"No endpoints found that support tool use. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection","code":404}}',
+  headers: Headers {
+    date: 'Wed, 24 Dec 2025 06:57:10 GMT',
+    'content-type': 'application/json',
+    'transfer-encoding': 'chunked',
+    connection: 'keep-alive',
+    'content-encoding': 'gzip',
+    'access-control-allow-origin': '*',
+    vary: 'Accept-Encoding',
+    'permissions-policy': 'payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")',
+    'referrer-policy': 'no-referrer, strict-origin-when-cross-origin',
+    'x-content-type-options': 'nosniff',
+    server: 'cloudflare',
+    'cf-ray': '9b2e33f69a1d0be8-DXB'
+  },
+  contentType: 'application/json',
+  rawResponse: Response {
+    status: 404,
+    statusText: 'Not Found',
+    headers: Headers {
+      date: 'Wed, 24 Dec 2025 06:57:10 GMT',
+      'content-type': 'application/json',
+      'transfer-encoding': 'chunked',
+      connection: 'keep-alive',
+      'content-encoding': 'gzip',
+      'access-control-allow-origin': '*',
+      vary: 'Accept-Encoding',
+      'permissions-policy': 'payment=(self "https://checkout.stripe.com" "https://connect-js.stripe.com" "https://js.stripe.com" "https://*.js.stripe.com" "https://hooks.stripe.com")',
+      'referrer-policy': 'no-referrer, strict-origin-when-cross-origin',
+      'x-content-type-options': 'nosniff',
+      server: 'cloudflare',
+      'cf-ray': '9b2e33f69a1d0be8-DXB'
+    },
+    body: ReadableStream { locked: true, state: 'closed', supportsBYOB: true },
+    bodyUsed: true,
+    ok: false,
+    redirected: false,
+    type: 'basic',
+    url: 'https://openrouter.ai/api/v1/chat/completions'
+  }
+}
