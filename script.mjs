@@ -108,3 +108,35 @@ async function main() {
 }
 
 main();
+
+file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/models/errors/chaterror.js:26
+    return new ChatError(v, {
+           ^
+
+/* ChatError: User not found.
+    at Object.transform (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/models/errors/chaterror.js:26:12)
+    at inst._zod.parse (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/classic/schemas.js:856:28)
+    at handlePipeResult (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/core/schemas.js:1749:22)
+    at inst._zod.parse (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/core/schemas.js:1740:16)
+    at Module.<anonymous> (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/core/parse.js:6:32)
+    at inst.parse (file:///Users/ahmad.mogral/cli/node_modules/zod/v4/classic/schemas.js:36:42)
+    at safeParseResponse.request.request (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:168:74)
+    at safeParseResponse (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:193:19)
+    at matchFunc (file:///Users/ahmad.mogral/cli/node_modules/@openrouter/sdk/esm/lib/matchers.js:168:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  statusCode: 401,
+  body: '{"error":{"message":"User not found.","code":401}}',
+  headers: Headers {},
+  contentType: 'application/json',
+  rawResponse: Response {},
+  'data$': {
+    error: { code: 401, message: 'User not found.' },
+    'request$': Request {},
+    'response$': Response {},
+    'body$': '{"error":{"message":"User not found.","code":401}}'
+  },
+  error: { code: 401, message: 'User not found.' }
+}
+
+Node.js v25.2.1
+*/
